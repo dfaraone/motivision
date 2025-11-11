@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Javascript API: Open external map page (Google) example</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/purecss@2.1.0/build/pure-min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8.2.3/dist/polyfill.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@3.6.2/dist/fetch.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/custom-event-polyfill@1.0.7/polyfill.js"></script>
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+
+      #player {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .external-button {
+        position: absolute;
+        top: 64px;
+        left: 50%;
+
+        -webkit-text-size-adjust: 100%;
+        tab-size: 4;
+        -webkit-font-smoothing: antialiased;
+        border: 0 solid #e5e7eb;
+        box-sizing: border-box;
+        font-family: inherit;
+        margin: 0;
+        text-transform: none;
+        cursor: pointer;
+        -webkit-appearance: button;
+        background-image: none;
+        margin-bottom: 0.5rem;
+        margin-right: 0.5rem;
+        border-radius: 0.5rem;
+        border-width: 1px;
+        --tw-border-opacity: 1;
+        border-color: rgb(209 213 219);
+        --tw-bg-opacity: 1;
+        background-color: rgb(255 255 255);
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+        padding-bottom: 0.625rem;
+        padding-top: 0.625rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        font-weight: 500;
+        --tw-text-opacity: 1;
+        color: rgb(17 24 39);
+      }
+    </style>
+  </head>
+  <body>
+    <iframe
+      id="player"
+      frameborder="0"
+      sandbox="allow-scripts allow-same-origin"
+      src="../index.html"
+    ></iframe>
+    <button class="external-button">OPEN</button>
+    <script>
+      // Open
+      document.querySelector(".external-button").addEventListener(
+        "click",
+        function () {
+          var iframe = document.querySelector('#player');
+          if (!iframe) {
+            return;
+          }
+
+          function onMessage(evt) {
+            if (evt.data.action === 'player-next-config') {
+              window.removeEventListener('message', onMessage, false);
+
+              var lat = evt.data.value.streetview.initial.lat;
+              var lon = evt.data.value.streetview.initial.lon;
+              
+              // Google
+              window.open("https://www.google.com/maps/search/?api=1&query=" + lat + "%2C" + lon);
+            }
+          }
+
+          window.addEventListener('message', onMessage, false);
+          iframe.contentWindow.postMessage('player-next-config-get', '*');
+        },
+        false
+      );
+    </script>
+  </body>
+</html>

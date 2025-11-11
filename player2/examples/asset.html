@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Javascript API: Asset example</title>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css">
+  <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8.2.3/dist/polyfill.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@3.6.2/dist/fetch.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/custom-event-polyfill@1.0.7/polyfill.js"></script>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    #form {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 400px;
+      height: 100%;
+    }
+
+    #player {
+      position: absolute;
+      top: 0;
+      left: 400px;
+      width: calc(100% - 400px);
+      height: 100%;
+    }
+
+    #form .row {
+      display: flex;
+      margin-top: 1rem;
+      margin-right: 1rem;
+      margin-left: 1rem;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #form .row label {
+      width: 120px;
+    }
+
+    #form .row input {
+      flex-grow: 1;
+    }
+
+    #form .actions {
+      display: flex;
+      margin-top: 1rem;
+      align-items: center;
+      justify-content: space-around;
+    }
+
+    #form .info {
+      display: flex;
+      margin-top: 1.5rem;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+    }
+
+    #form .info-title {
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <form id="form" class="pure-form">
+    <div class="row">
+      <label for="lat">Asset Latitude:</label>
+      <input type="text" name="lat" value="50.001217" required>
+    </div>
+    <div class="row">
+      <label for="lon">Asset Longitude:</label>
+      <input type="text" name="lon" value="8.651100" required>
+    </div>
+    <div class="row">
+      <label for="alt">Asset Altitude:</label>
+      <input type="text" name="alt" value="128.00">
+    </div>
+    <div class="row">
+      <label for="label">Asset Label:</label>
+      <input type="text" name="label" value="Applied Streetview">
+    </div>
+    <div class="actions">
+      <input id="clear" class="pure-button" type="button" value="Clear Asset">
+      <input class="pure-button pure-button-primary" type="submit" value="Add Asset">
+    </div>
+    <div class="info">
+      <strong class="info-title">Additional coordinates of assets to try:</strong>
+      <div>50.002708 &nbsp; 8.647932</div>
+      <div>50.001736 &nbsp; 8.649156</div>
+      <div>50.000239 &nbsp; 8.647266</div>
+      <div>49.999439 &nbsp; 8.649220</div>
+    </div>
+  </form>
+  <iframe
+    id="player"
+    frameBorder="0"
+    sandbox="allow-scripts allow-same-origin"
+    src="../index.html"
+  ></iframe>
+  <script>
+    // Update Asset
+    document.getElementById('form').addEventListener('submit', function(evt) {
+      evt.preventDefault();
+
+      var player = document.querySelector('#player');
+      if (!player) {
+        return;
+      }
+      
+      var formData = Object.fromEntries(new FormData(evt.target));
+
+      // playerLookAt
+      var playerLookAtData = {
+          lat: +formData.lat,
+          lon: +formData.lon,
+          alt: formData.alt !== '' ? +formData.alt : undefined,
+        };
+        var event = new window.CustomEvent('playerLookAt', { detail: playerLookAtData });
+        player.contentDocument.dispatchEvent(event);
+      
+      // assetUpdate
+      var assetUpdateData = {
+        lat: +formData.lat,
+        lon: +formData.lon,
+        alt: formData.alt !== '' ? +formData.alt : undefined,
+        label: formData.label,
+      };
+      var event = new window.CustomEvent('assetUpdate', { detail: assetUpdateData });
+      player.contentDocument.dispatchEvent(event);
+    });
+   
+    // Clear Asset
+    document.getElementById('clear').addEventListener('click', function(evt) {
+      var player = document.querySelector('#player');
+      if (!player) {
+        return;
+      }
+
+      var event = new window.CustomEvent('assetUpdate', { detail: null });
+      player.contentDocument.dispatchEvent(event);
+    }, false);
+  </script>
+</body>
+</html>
