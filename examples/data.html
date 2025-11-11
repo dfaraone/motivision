@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Javascript API: Data example</title>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css">
+  <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8.2.3/dist/polyfill.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@3.6.2/dist/fetch.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/custom-event-polyfill@1.0.7/polyfill.js"></script>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    #form {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 400px;
+      height: 100%;
+    }
+
+    #player {
+      position: absolute;
+      top: 0;
+      left: 400px;
+      width: calc(100% - 400px);
+      height: 100%;
+    }
+
+    #form .row {
+      display: flex;
+      margin-top: 1rem;
+      margin-right: 1rem;
+      margin-left: 1rem;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    #form .row strong {
+      margin-right: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="form">
+    <div class="row">
+      <strong>ID:</strong> <span class="id"></span>
+    </div>
+    <div class="row">
+      <strong>Label:</strong> <span class="label"></span>
+    </div>
+    <div class="row">
+      <strong>Timeline:</strong> <span class="timeline"></span>
+    </div>
+    <div class="row">
+      <strong>Latitude:</strong> <span class="lat"></span>
+    </div>
+    <div class="row">
+      <strong>Longitude:</strong> <span class="lon"></span>
+    </div>
+    <div class="row">
+      <strong>Altitude:</strong> <span class="height"></span>
+    </div>
+    <!-- <div class="row">
+      <strong>Heading:</strong> <span class="heading"></span>
+    </div>
+    <div class="row">
+      <strong>Horizontal looking direction:</strong> <span class="hlookat"></span>
+    </div> -->
+    <div class="row">
+      <strong>Horizontal view direction:</strong> <span class="headingHlookat"></span>
+    </div>
+    <div class="row">
+      <strong>Vertical looking direction:</strong> <span class="vlookat"></span>
+    </div>
+    <div class="row">
+      <strong>Field of view:</strong> <span class="fov"></span>
+    </div>
+    <div class="row">
+      <strong>Date:</strong> <span class="date"></span>
+    </div>
+  </div>
+  <iframe
+    id="player"
+    frameBorder="0"
+    sandbox="allow-scripts allow-same-origin"
+    src="../index.html"
+  ></iframe>
+  <script>
+    // Update data if player updated
+    window.document.addEventListener('playerUpdated', function(evt) {
+      for (var key in evt.detail) {
+        var value = evt.detail[key];
+        var el = document.querySelector('#form .' + key);
+        if (!el) {
+          continue;
+        }
+
+        if (key === 'height' || key === 'heading' || key === 'headingHlookat' || key === 'hlookat' || key === 'vlookat' || key === 'fov') {
+          el.innerHTML = value.toFixed(1);
+        } else {
+          el.innerHTML = value || '';
+        }
+      }
+    }, false);
+  </script>
+</body>
+</html>

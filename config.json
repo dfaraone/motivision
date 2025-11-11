@@ -1,0 +1,171 @@
+{
+  "general": {
+    "title": "Motive",
+    "logo": {
+      "enabled": false,
+      "imageUrl": "",
+      "enabledSmall": false,
+      "imageUrlSmall": "",
+      "linkUrl": "",
+      "linkTarget": "_blank"
+    },
+    "search": {
+      "enabled": false,
+      "source": "nominatim"
+    },
+    "flow": {
+      "enabled": true,
+      "waitTime": 0,
+      "speed": 2,
+      "initial": false
+    },
+    "layout": {
+      "window": 1,
+      "minimized": false
+    },
+    "share": {
+      "enabled": true
+    }
+  },
+  "streetview": {
+    "tilesUrl": "https://share.mozaika51.com/motive-target/panorama-tiles",
+    "dataUrl": "tiles-1762860471",
+    "cameraHeight": 1.95,
+    "hlookat": {
+      "initial": 73.47122277198133
+    },
+    "vlookat": {
+      "initial": 5.014588398589878,
+      "min": -90,
+      "max": 90
+    },
+    "limitview": "fullrange",
+    "fov": {
+      "type": "MFOV",
+      "initial": 99.142353765309,
+      "min": 20,
+      "max": 120
+    },
+    "hotspot": {
+      "enabled": false,
+      "distanceMin": 0,
+      "distanceMax": 40,
+      "width": 150
+    },
+    "arrow": {
+      "enabled": false,
+      "distanceMin": 0,
+      "distanceMax": 40,
+      "angleMax": 60
+    },
+    "mouse": {
+      "enabled": true,
+      "distanceMin": 5,
+      "distanceMax": 20,
+      "width": 150
+    },
+    "captureDate": {
+      "enabled": false,
+      "time": false
+    },
+    "autorotate": {
+      "enabled": false,
+      "waitTime": 0,
+      "speed": 3,
+      "stopOnClick": true
+    },
+    "zoom": {
+      "enabled": false
+    },
+    "latLon": {
+      "enabled": true
+    },
+    "initial": {
+      "id": "reel_0006_20250910-165337-panos-000000003",
+      "heading": 269.9625292740047,
+      "height": 798.7,
+      "lat": 34.580301899592946,
+      "lon": -118.07180975442715,
+      "date": "2025-09-10T16:57:09-07:00",
+      "tileFormat": "1024,2048x1024,4096x2048,8192x4096,16384x8192"
+    }
+  },
+  "map": {
+    "view": {
+      "center": [
+        -118.1879697831162,
+        34.16216822554742
+      ],
+      "zoom": 8.445663975847747
+    },
+    "providerInitial": 1,
+    "providers": [
+      {
+        "name": "OpenStreetMap",
+        "url": "//a.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        "attributions": "&copy; <a target='_blank' href='http://openstreetmap.org'>OpenStreetMap</a> contributors, <a target='_blank' href='http://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>",
+        "maxZoom": 18,
+        "type": "TMS"
+      },
+      {
+        "name": "Esri satellite",
+        "url": "//server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        "attributions": "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
+        "maxZoom": 18,
+        "type": "TMS"
+      },
+      {
+        "name": "Esri streets",
+        "url": "//server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+        "attributions": "Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012",
+        "type": "TMS"
+      }
+    ],
+    "streetviewPreview": {
+      "enabled": true
+    },
+    "zoom": {
+      "enabled": false
+    },
+    "dataLayer": {
+      "opacity": 1
+    },
+    "scaleLine": {
+      "enabled": true,
+      "units": "metric"
+    }
+  },
+  "timeline": {
+    "expanded": false,
+    "enabled": false,
+    "initial": "",
+    "timelines": [],
+    "timelinesInitial": []
+  },
+  "translations": {
+    "SHARE_COPIED_CLIPBOARD": "Link has been copied to clipboard",
+    "SHARE_TOOLTIP": "Sharing",
+    "SEARCH_TOOLTIP": "Search",
+    "LAYOUT_MINIMIZE_TOOLTIP": "Minimize",
+    "LAYOUT_SWITCH_TOOLTIP": "Fullscreen",
+    "TIMELINE_ERROR_NO_NEARBY_STREETVIEWS": "No streetviews nearby in {timeline} timeline.",
+    "TIMELINE_TOOLTIP": "Timelines",
+    "STREETVIEW_CAPTURED_DATE_LABEL": "Image capture",
+    "STREETVIEW_LATLON_LABEL": "Lat/Lon",
+    "STREETVIEW_FLOW_PREVIOUS_TOOLTIP": "Previous streetview",
+    "STREETVIEW_FLOW_NEXT_TOOLTIP": "Next streetview",
+    "STREETVIEW_MAXIMIZE_TOOLTIP": "Streetview maximize",
+    "MAP_ATTRIBUTIONS_TOOLTIP": "Map data legal notices",
+    "MAP_BASEMAP_TOOLTIP": "Basemap",
+    "MAP_MY_LOCATION_TOOLTIP": "Your location",
+    "MAP_ZOOM_LEVEL_TOOLTIP": "Map zoom level",
+    "MAP_MAXIMIZE_TOOLTIP": "Map maximize",
+    "PLAY_SPEED_TOOLTIP": "Play speed",
+    "PLAY_DIRECTION_TOOLTIP": "Play direction",
+    "TOUR_POSITION_TOOLTIP": "Tour position",
+    "PLAY_START_TOOLTIP": "Play",
+    "PLAY_STOP_TOOLTIP": "Stop",
+    "LANGUAGE_SELECT_TOOLTIP": "Language",
+    "SHARE_COPIED_CLIPBOARD_ERROR": "Not available in Preview Mode"
+  }
+}

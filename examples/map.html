@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Javascript API: Map example</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
+  <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8.2.3/dist/polyfill.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@3.6.2/dist/fetch.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/custom-event-polyfill@1.0.7/polyfill.js"></script>
+  <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+    }
+
+    #player {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 50%;
+      height: 100%;
+    }
+
+    .markerIcon {
+      font-size: 2rem;
+      color: #8561c5;
+      -webkit-text-stroke-width: 2px;
+      -webkit-text-stroke-color: #482880;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <iframe
+    id="player"
+    frameBorder="0"
+    sandbox="allow-scripts allow-same-origin"
+    src="../index.html"
+  ></iframe>
+  <script>
+    // Map
+    var map = L.map('map').setView([0, 0], 2);
+
+    // Load initial map view from config.json
+    fetch('../config.json')
+      .then(function(res) {
+        return res.json();
+      })
+      .then(function(config) {
+        var center = config.map.view.center;
+        var zoom = config.map.view.zoom;
+        map.setView([center[1], center[0]], zoom);
+      });
+
+    // OSM
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+    }).addTo(map);
+
+    // Streetview marker
+    var markerIcon = L.divIcon({
+      className: 'markerIcon',
+      html: '<div class="markerIconArrow">🠝</div>',
+      iconSize: [24, 24],
+      iconAnchor: [12, 24]
+    });
+
+    var marker = L.marker([0, 0], { icon: markerIcon })
+      .addTo(map);
+
+    // Update player if the map is clicked
+    map.on('click', function(evt) {
+      var player = document.querySelector('#player');
+      if (!player || !evt.latlng) {
+        return;
+      }
+
+      var data = {
+        lat: evt.latlng.lat,
+        lon: evt.latlng.lng,
+      };
+      var event = new window.CustomEvent('playerLookAt', { detail: data });
+    
+      player.contentDocument.dispatchEvent(event);
+    });
+
+    // Update map if player updated
+    window.document.addEventListener('playerUpdated', function(evt) {
+      var selected = evt.detail;
+      
+      console.info('playerUpdated', selected);
+
+      // Heading
+      var markerIconArrow = marker.getElement().querySelector('.markerIconArrow');
+      if (markerIconArrow) {
+        markerIconArrow.style.transform = 'rotate(' + selected.headingHlookat + 'deg)';
+      }
+      
+      // Lat, lon
+      marker.setLatLng([selected.lat, selected.lon]);
+    }, false);
+  </script>
+</body>
+</html>

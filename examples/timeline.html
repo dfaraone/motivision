@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Javascript API: Timeline example</title>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css">
+  <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8.2.3/dist/polyfill.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@3.6.2/dist/fetch.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/custom-event-polyfill@1.0.7/polyfill.js"></script>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    #form {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 400px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #form h3 {
+      margin-bottom: 0;
+    }
+
+    #form button {
+      margin-top: 1rem;
+    }
+
+    #player {
+      position: absolute;
+      top: 0;
+      left: 400px;
+      width: calc(100% - 400px);
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="form"></div>
+  <iframe
+    id="player"
+    frameBorder="0"
+    sandbox="allow-scripts allow-same-origin"
+    src="../index.html"
+  ></iframe>
+  <script>
+    fetch('../config.json')
+      .then(function(res) {
+        return res.json();
+      })
+      .then(function(config) {
+        var formEl = document.getElementById('form');
+
+        var player = document.querySelector('#player');
+        if (!player) {
+          return;
+        }
+
+        if (!config.timeline.enabled || config.timeline.timelines.length === 0) {
+          formEl.innerHTML = '<h3>Timelines are not enabled</h3>';
+          return;
+        }
+
+        formEl.innerHTML = '<h3>Change timeline</h3>';
+        config.timeline.timelines.forEach(function(timeline) {
+          formEl.innerHTML += '<button class="pure-button" data-timeline=' + timeline + '>' + timeline + '</button>';
+        });
+
+        formEl.addEventListener('click', function(evt) {
+          var timelineNext = evt.target.getAttribute('data-timeline');
+          if (timelineNext) {
+            var event = new window.CustomEvent('timelineChange', { detail: timelineNext });
+            player.contentDocument.dispatchEvent(event);
+          }
+        }, false);
+      });
+  </script>
+</body>
+</html>
